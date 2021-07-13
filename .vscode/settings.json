@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./Hate-Speech-Detection-WebApp-master"
+    ]
+}
