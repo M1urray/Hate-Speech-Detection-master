@@ -15,7 +15,6 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.preprocessing import scale, MinMaxScaler
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
-from xgboost import train
 #import dill as pickle # used to pickle lambda functions
 
 from pytagcloud import create_tag_image, create_html_data, make_tags, LAYOUT_MIX

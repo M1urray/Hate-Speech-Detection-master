@@ -114,7 +114,7 @@ def predict():
                 # replace no more than [number of words in final_features - 1] in order to never generate empty strings
                 max_replace=len(final_features) - 1
             )
-            te.set_params.__init__(self=None,sampler=sampler,random_state=None,sampler_params=None)  
+            te.set_params(sampler=sampler)  
             # set the sampler that creates the 5000 random text samples
             # predict_proba: Black-box classification pipeline. predict_proba should be a function which takes a list of
             #                strings (documents) and return a matrix of shape (n_samples, n_classes)
@@ -125,7 +125,7 @@ def predict():
             # By default TextExplainer generates 5000 distorted texts
             final_features = ' '.join(final_features)
             print(final_features)
-            te.fit(final_features, predict_prob,self=None)  # form_text[0]
+            te.fit(final_features, predict_prob)  # form_text[0]
 
             # top_targets: number of targets/classes to show
             # targets=[output]: select targets/classes to show by name
