@@ -90,7 +90,7 @@ def train_model():
         ('svd', TruncatedSVD(n_components=300)),
         # multi:softmax: multiclass classification using the softmax objective
         ('xgb', XGBClassifier(learning_rate=0.01, n_estimators=1000, max_depth=4, min_child_weight=6, gamma=0,
-                              subsample=0.8, colsample_bytree=0.8, reg_alpha=0.005, objective='binary:logistic',
+                              subsample=0.8, colsample_bytree=0.8, reg_alpha=0.005, objective='softmax',
                               nthread=4, random_state=27,eval_metric='merror',num_class=7))
     ])
 

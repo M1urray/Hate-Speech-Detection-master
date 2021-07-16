@@ -147,7 +147,7 @@ tweets.reset_index(drop=True, inplace=True)  # reset index needed for dataframe 
 
 
 # ======================================================================================================================
-# Wordclouds for each label
+# Wordclouds for each labels
 # ======================================================================================================================
 
 hate_speech_text = tweets[tweets['class'] == 0]
@@ -187,9 +187,9 @@ model = pipeline.Pipeline([
     # multi:softmax: multiclass classification using the softmax objective
     ('xgb', XGBClassifier(learning_rate=0.01, n_estimators=1000, max_depth=4, min_child_weight=6, gamma=0,
                           subsample=0.8, colsample_bytree=0.8, reg_alpha=0.005, objective='multi:softmax',
-                          nthread=4, random_state=27,eval_metric='mlogloss',use_label_encoder=False,num_class=-1))
+                          nthread=4, random_state=27,eval_metric='mlogloss'))
 
-])  # F1 Score: 0.6968215126026323
+]) 
 
 # {'svm__C': 100, 'svm__gamma': 0.1, 'svm__kernel': 'rbf'}           F1 Score: 0.6479
 # {'svm__C': 100, 'svm__gamma': 0.1, 'svm__kernel': 'poly'}          F1 Score: 0.6646
@@ -231,10 +231,12 @@ class_weights = list(class_weight.compute_class_weight('balanced', np.unique(y_t
 
 # count of the labels
 class_count = Counter(y_train)
-
+print(class_count)
 # the max label count
 all_values = class_count.values()
 max_count = max(all_values)
+print(all_values)
+print(max_count)
 
 # undervalue class 2 ('neither', 3/4 of the majority class)
 class_weights = {'hate speech': max_count / class_count['hate speech'],
@@ -245,7 +247,7 @@ print(class_weights)
 print(y_train.shape[0])
 
 # assign the corresponding class weight for each individual data instance
-w_array = np.ones(y_train.shape[0], dtype='int')
+w_array = np.ones(y_train.shape[0], dtype='float')
 for i, val in enumerate(y_train):
     w_array[i] = class_weights[val]
 
@@ -274,8 +276,7 @@ print('Precision: {}'.format(prec))
 print('Recall: {}'.format(rec))
 print('F1 Score: {}'.format(f1))
 
-
-#AFTER FITTING THE MODEL, SAVE IT WITH PICKLE
+###AFTER FITTING THE MODEL, SAVE IT WITH PICKLE
 print(Y.value_counts())
 
 # count of the labels
@@ -303,12 +304,8 @@ print(Y)
 
 # retrain model on whole dataset and save it
 model.fit(X, Y, xgb__sample_weight=w_array)
-
 # Saving model to disk
 pickle.dump(model, open('model.pkl', 'wb'))
-'''
-
-'''
 # Load the model to make predictions
 model = pickle.load(open('model.pkl','rb'))
 y_predicted = model.predict(x_test)

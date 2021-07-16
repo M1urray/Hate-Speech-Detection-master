@@ -1,21 +1,9 @@
 import pickle
-from typing import Any
 import preprocessing
 from eli5.lime import TextExplainer
-from flask import Flask 
-from flask import render_template
-from flask import request
-from eli5.lime.samplers import BaseSampler, MaskingTextSampler, MaskingTextSamplers
+from flask import Flask, request, render_template
+from eli5.lime.samplers import MaskingTextSampler
 from sklearn.feature_extraction.text import TfidfVectorizer
-import numpy as np
-from scipy.stats import itemfreq
-from sklearn.base import BaseEstimator, clone
-from sklearn.neighbors import KernelDensity
-from sklearn.metrics import pairwise_distances
-from sklearn.model_selection import GridSearchCV, KFold
-from sklearn.utils import check_random_state
-
-from eli5.utils import vstack
 
 # install ipython for show_prediction of eli5 to work
 
@@ -31,7 +19,7 @@ def dummy(token):
 
 
 # Load pre-trained ML model
-model = pickle.load(open('model.pkl', 'rb'))  # NEEDS TO BE CREATED WITH BOTH FILES IN FOLDER 
+model = pickle.load(open('model.pkl', 'rb'))  # NEEDS TO BE CREATED WITH BOTH FILES IN FOLDER pickle_model_for_webapp
 
 # Create object of class preprocessing to clean data
 reading = preprocessing.preprocessing(convert_lower=True, use_spell_corrector=True, only_verbs_nouns=False)
@@ -41,7 +29,7 @@ reading = preprocessing.preprocessing(convert_lower=True, use_spell_corrector=Tr
 # n_samples: sets the number of random examples to generate from given instance of text (default value 5000)
 # use LIME method to train a white box classifier to make the same prediction as the black box one (pipeline)
 te = TextExplainer(vec=TfidfVectorizer(ngram_range=(1, 2), preprocessor=dummy, token_pattern='(?u)\\b\\w+\\b'),
-                   n_samples=5000, char_based=False, random_state=42,sampler=MaskingTextSampler)
+                   n_samples=5000, char_based=False, random_state=42)
 
 
 def one_word_get_prediction_class_name(prediction):
@@ -99,9 +87,9 @@ def predict():
         # ==============================================================================================================
 
         # The paths of produced wordcloud for each individual class of the dataset
-        wordcloud_descr = [('Hate Speech class', 'Hate-Speech-Detection-WebApp-master\images\hate_speech.png'),
-                           ('Offensive Language class', 'Hate-Speech-Detection-WebApp-master\images\offens_lang.png'),
-                           ('Neither class', 'Hate-Speech-Detection-WebApp-master\images\neither.png')]
+        wordcloud_descr = [('Hate Speech class', 'static/images/hate_speech.png'),
+                           ('Offensive Language class', 'static/images/offens_lang.png'),
+                           ('Neither class', 'static/images/neither.png')]
 
         if len(final_features) >= 1:  # given sentence has 1 or more words after pre-processing
             output = model.predict([final_features])[0]  # predict only one text
@@ -114,8 +102,9 @@ def predict():
                 # replace no more than [number of words in final_features - 1] in order to never generate empty strings
                 max_replace=len(final_features) - 1
             )
-            te.set_params(sampler=sampler)  
-            # set the sampler that creates the 5000 random text samples
+
+            te.set_params(sampler=sampler)  # set the sampler that creates the 5000 random text samples
+
             # predict_proba: Black-box classification pipeline. predict_proba should be a function which takes a list of
             #                strings (documents) and return a matrix of shape (n_samples, n_classes)
             # LIME algorithm:
