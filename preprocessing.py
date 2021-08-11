@@ -13,6 +13,9 @@ from nltk.stem.wordnet import WordNetLemmatizer  # used for lemmatizer
 from symspellpy.editdistance import DistanceAlgorithm
 from symspellpy.symspellpy import SymSpell, Verbosity
 
+from nltk.corpus.reader.wordnet import WordNetError
+import sys
+
 
 class preprocessing:
     # ======================================================================================================================
@@ -59,8 +62,7 @@ class preprocessing:
                             "could've": "could have", "hakuweza": "hakuweza", "did not": "did not",
                             "hana": "haifanyi", "usifanye": "usifanye", "haikuwa": "haikuwa", "haikuwa": "haikuwa",
                             "have": "have not", "he'd": "he would", "he will": "he will", "he": "yeye ni", 
-                            "vipi": "vipi", "vipi": "vipi", "vipi": "vipi", "vipi": "vipi",
-                            "Ningependa": "ningependa", "ningekuwa": "ningekuwa", "nitafanya": "nitafanya", "nitakuwa": "nitakuwa na",
+                            "vipi": "vipi","Ningependa": "ningependa", "ningekuwa": "ningekuwa", "nitafanya": "nitafanya", "nitakuwa": "nitakuwa na",
                             "Niko": "Niko", "Nimekuwa": "Nina", "ningependa": "ningependa", "ningekuwa": "ningekuwa na",
                             "nita": "nitafanya", "nitakuwa": "nitakuwa na", "mimi ni": "mimi ni", "nimekuwa": "nina",
                             "sio": "sio", "ingekuwa": "ingekuwa", "ingekuwa": "ingekuwa", "itakuwa": "itakuwa",
