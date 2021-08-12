@@ -4,7 +4,7 @@ from train_pickle_pipeline_for_webapp import train_model
 
 
 # ======================================================================================================================
-# THIS SCRIPT IS MANDATORY IN ORDER TO PRODUCE A PICKLE MODEL THAT RUNS IS HEROKU. THE PICKLE MUST BE SAVED INSIDE THE
+# THIS SCRIPT IS MANDATORY IN ORDER TO PRODUCE A PICKLE MODEL THAT RUNS IN HEROKU. THE PICKLE MUST BE SAVED INSIDE THE
 # MODULE NAMED "__main__", SO THAT WHEN UN-PICKLING THE MODEL THE dummy FUNCTION CAN BE LOCATED AND READ. ADDITIONALLY,
 # THE FILE THAT CONTAINS THE MODEL THAT WILL BE TRAINED IN THE WHOLE DATASET (train_pickle_pipeline_for_webapp) MUST BE
 # IMPORTED AS WELL IN ORDER FOR THIS TO WORK (it cannot just be inserted in the "__main__" module, it MUST be in
@@ -20,6 +20,5 @@ from train_pickle_pipeline_for_webapp import train_model
 
 if __name__ == "__main__":
     model = train_model()  # MUST TO TRAIN THE MODEL IN SEPARATE FILE
-
     # Saving model to disk
     pickle.dump(model, open('model.pkl', 'wb'))  # MUST TO SAVE THE MODEL UNDER MODULE "__main__"
