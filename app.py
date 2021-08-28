@@ -103,7 +103,7 @@ def predict():
                 max_replace=len(final_features) - 1
             )
 
-            te.set_params(sampler=sampler)  # set the sampler that creates the 5000 random text samples
+            te.sampler=sampler  # set the sampler that creates the 5000 random text samples
 
             # predict_proba: Black-box classification pipeline. predict_proba should be a function which takes a list of
             #                strings (documents) and return a matrix of shape (n_samples, n_classes)
